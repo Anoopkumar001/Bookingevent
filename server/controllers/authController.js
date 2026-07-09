@@ -12,6 +12,7 @@ const generateToken = (id, role) => {
 //register User
 
 exports.registerUser = async (req, res) => {
+    console.log("REGISTER FUNCTION CALLED");
     try {
         const { name, email, password } = req.body;
 
@@ -127,18 +128,17 @@ exports.verifyOtp = async (req, res) => {
 
         // `{ new: true }` lagane se updated user ka data milega fresh ID ke sath
         const user = await User.findOneAndUpdate(
-            { email }, 
-            { isVerified: true }, 
-            { new: true } 
+            { email },
+            { isVerified: true },
+            { returnDocument: 'after' }
         );
-
         if (!user) {
             return res.status(404).json({ error: 'User not found associated with this OTP' });
         }
 
         await OTP.deleteMany({ email, action: "account_verification" });
 
-        res.json({ 
+        res.json({
             message: 'Account verified successfully. You can now log in.',
             _id: user._id,
             name: user.name,
