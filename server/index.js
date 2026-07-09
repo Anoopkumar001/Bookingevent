@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
+
 const authRoutes = require('./routes/auth.js');
 const eventsRoutes = require('./routes/events.js');
 const bookingRoutes = require('./routes/booking.js');
@@ -13,6 +14,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+const dns = require('dns');
+dns.setDefaultResultOrder('ipv4first');
 
 // Routes
 app.use('/api/auth', authRoutes);
